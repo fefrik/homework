@@ -13,7 +13,7 @@ Requirements
 =======================================
  - Git
  - Maven 
- - Java 8
+ - Java 8 / JDK8
  - Browser
 
 
