@@ -9,7 +9,7 @@ REST Endpoints are available and documented by Swagger UI.
 
 http://localhost:8000/swagger-ui.html
 
-Requirenments
+Requirements
 =======================================
  - Git
  - Maven 
