@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Y-soft"/>
+    <meta name="keywords" content="homework "/>
+    <meta name="author" content="Vladimír Pfeffer; email:info@kupahrej.cz"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Homework</title>
+
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- homework styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+<div class="container">
+    <h1>Homework - Translator</h1>
+
+    <p>Select type and way of translation</p>
+
+    <form action="/">
+        <div class="form-group">
+        <div class="col-sm-6">
+            <fieldset>
+                <legend>Translator:</legend>
+                <select class="selectpicker" name="translator" id="translator">
+
+                </select>
+            </fieldset>
+        </div>
+        <div class="col-sm-6">
+            <fieldset>
+                <legend>Direction:</legend>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="action" value="encode" checked>Encode<br>
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="action" value="decode">Decode<br>
+                    </label>
+                </div>
+            </fieldset>
+        </div>
+        </div>
+        <div class="form-group">
+        <div class="col-xs-12 col-md-5 vcenter">
+            <p>Source text</p>
+            <textarea id="sourceText"></textarea>
+        </div>
+        <div class="col-xs-12 col-md-1 vcenter">
+            <input type="submit" id="translateButton" value="Translate!">
+        </div>
+        <div class="col-xs-12 col-md-5 vcenter">
+            <p>Result</p>
+            <textarea id="resultText"></textarea>
+        </div>
+        </div>
+    </form>
+</div>
+
+<script src="js/Scripts.js"></script>
+</body>
+</html>
