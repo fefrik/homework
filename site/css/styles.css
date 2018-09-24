@@ -9,3 +9,7 @@ textarea {
     vertical-align: middle;
     float: none;
 }
+
+.caesarOption {
+    display: none;
+}

@@ -3,8 +3,7 @@ package homework.factory;
 public enum TranslatorType {
 
     MORSE("morse"),
-    PLUS("plus");
-
+    CAESAR("caesar");
 
     private final String value;
 

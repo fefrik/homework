@@ -1,31 +1,32 @@
 package homework.controller;
 
 import homework.StatusMessageDto;
-import homework.dto.TranslationDto;
+import homework.dto.TranslationRequestDto;
+import homework.dto.TranslationResponseDto;
 import homework.exception.ServiceNotFoundException;
 
 import homework.factory.TranslatorService;
 import homework.factory.TranslatorType;
 
+import homework.model.TranslationData;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.json.JSONObject;
+
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/translator")
@@ -39,41 +40,48 @@ public class TranslatorRestController {
     @Autowired
     private TranslatorService translatorService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     /**
      * Endpoint for execution of translation method
-     * @param serviceName Translator Service (morse|plus|etc..)
+     * @param serviceName Translator Service (morse|caesar|etc..)
      * @param action Translator direction (encode|decode)
-     * @param text Translated text
-     * @return ResponseEntity<TranslationDto>
+     * @param requestDto Translation Data
+     * @return ResponseEntity<TranslationResponseDto>
      * @throws ServiceNotFoundException
      */
-    @ApiOperation(value = "Translation", response = TranslationDto.class)
+    @ApiOperation(value = "Translation", response = TranslationResponseDto.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Succefull 200", response = TranslationDto.class),
+            @ApiResponse(code = 200, message = "Succefull 200", response = TranslationResponseDto.class),
             @ApiResponse(code = 500, message = "Error 500", response = StatusMessageDto.class),
     })
-    @RequestMapping(value = "/{serviceName}/{action}", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{serviceName}/{action}", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @SuppressWarnings("unchecked")
-    public ResponseEntity<TranslationDto> translate(
-            @ApiParam(value = "Translator Service (morse|plus|etc..)") @PathVariable String serviceName,
+    public ResponseEntity<TranslationResponseDto> translate(
+            @ApiParam(value = "Translator Service (morse|caesar|etc..)") @PathVariable String serviceName,
             @ApiParam(value = "Translator direction (encode|decode)") @PathVariable String action,
-            @ApiParam(value = "Translated text") @RequestBody String json) throws ServiceNotFoundException {
-        try {
-            JSONObject object = new JSONObject(json);
-            String text = object.getString("text");
-            String result = "";
-            if (ENCODE.equals(action)) {
-                logger.info("Encoding string {}", text);
-                result = translatorService.encode(text, TranslatorType.valueOf(serviceName.toUpperCase()));
-            } else if (DECODE.equals(action)) {
-                logger.info("Decoding string {}", text);
-                result = translatorService.decode(text, TranslatorType.valueOf(serviceName.toUpperCase()));
-            }
-            return new ResponseEntity<>(new TranslationDto(text, result, serviceName, action), HttpStatus.OK);
-        } catch (IllegalArgumentException ex) {
-            throw new ServiceNotFoundException();
+            @ApiParam(value = "Translation data") @RequestBody TranslationRequestDto requestDto) throws ServiceNotFoundException {
+
+        TranslatorType serviceType = TranslatorType.valueOf(serviceName.toUpperCase());
+        TranslationData data = modelMapper.map(requestDto, TranslationData.class);
+
+        String text = data.getText();
+
+        if (ENCODE.equals(action)) {
+            logger.info("Encoding string {}", data.getText());
+            String result = translatorService.encode(data, serviceType);
+            return new ResponseEntity<>(new TranslationResponseDto(text, result, serviceName, action), HttpStatus.OK);
         }
+
+        if (DECODE.equals(action)) {
+            logger.info("Decoding string {}", data.getText());
+            String result = translatorService.decode(data, serviceType);
+            return new ResponseEntity<>(new TranslationResponseDto(text, result, serviceName, action), HttpStatus.OK);
+        }
+
+        throw new ServiceNotFoundException();
     }
 
 

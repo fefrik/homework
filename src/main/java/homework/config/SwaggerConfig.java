@@ -1,9 +1,15 @@
 package homework.config;
 
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -55,6 +61,19 @@ public class SwaggerConfig {
                 .displayRequestDuration(true)
                 .validatorUrl("")
                 .build();
+    }
+
+    @Primary
+    @Bean(name = "objectMapper")
+    public ObjectMapper hibernateAwareObjectMapper(){
+
+        ObjectMapper mapperInstance = new ObjectMapper();
+        mapperInstance.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        mapperInstance.disable(MapperFeature.USE_GETTERS_AS_SETTERS);
+        mapperInstance.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapperInstance.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+        return mapperInstance;
     }
 
 }

@@ -1,30 +1,33 @@
 package homework.service;
 
+import homework.model.TranslationData;
 import org.springframework.stereotype.Service;
 
 /**
- * Simple Plus One Service - increase ordinal value of letter about 1 to forward
+ * Caesar Service - increase ordinal value of letter about parameter shift
  *
  * @author Vladimir Pfeffer
  */
 @Service
-public class PlusService implements Translator {
+public class CaesarService implements Translator {
 
     @Override
-    public String encode(String text) {
+    public String encode(TranslationData data) {
+        String text = data.getText();
         String result = "";
         for (Character letter : text.toLowerCase().toCharArray()) {
-            int ord = (int)letter + 1;
+            int ord = (int)letter + data.getShift();
             result += (char) ord;
         }
         return result;
     }
 
     @Override
-    public String decode(String text) {
+    public String decode(TranslationData data) {
+        String text = data.getText();
         String result = "";
         for (Character letter : text.toLowerCase().toCharArray()) {
-            int ord = (int)letter - 1;
+            int ord = (int)letter - data.getShift();
             result += (char) ord;
         }
         return result;

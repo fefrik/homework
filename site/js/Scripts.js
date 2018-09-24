@@ -32,17 +32,38 @@
 
         listen: function() {
             var context = this;
+            $("select#translator").change(function(e) {
+
+                var serviceName = $(this).find("option:selected").attr("value");
+
+                switch (serviceName){
+                    case "CAESAR":
+                        $(".caesarOption").show();
+                        break;
+                    default:
+                        $(".caesarOption").hide();
+                        break;
+                }
+
+            });
             $("input#translateButton").click(function(e) {
                 e.preventDefault();
+
+                // Select
                 var translatorType = $("select#translator").val();
                 var translatorDirection = $('input[name=action]:checked').val();
-                var text = $("textarea#sourceText").val();
-                var sourceText = JSON.stringify({'text': text});
+
+                // Create Json Data Object
+                var requestData = {};
+                requestData.text = $("textarea#sourceText").val();
+                requestData.shift = $("input#shift").val();
+
+                var requestJson = JSON.stringify(requestData);
 
                 $.ajax({
                     url: Scripts.TRANSLATOR_ENDPOINT + translatorType + "/" + translatorDirection,
                     type: "POST",
-                    data: sourceText,
+                    data: requestJson,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
 

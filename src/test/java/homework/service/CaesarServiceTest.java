@@ -18,10 +18,10 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @Import({Config.class})
-public class MorseServiceTest {
+public class CaesarServiceTest {
 
     @Autowired
-    private MorseService morseService;
+    private CaesarService caesarService;
 
     @Mock
     private TranslationData translationData;
@@ -29,13 +29,15 @@ public class MorseServiceTest {
     @Test
     public void testEncode() {
         when(translationData.getText()).thenReturn(ApplicationTests.TEST_TEXT);
-        Assert.assertEquals(ApplicationTests.TEST_TEXT_MORSE_ENCODE, morseService.encode(translationData));
+        when(translationData.getShift()).thenReturn(1);
+        Assert.assertEquals(ApplicationTests.TEST_TEXT_CAESAR_ENCODE_1, caesarService.encode(translationData));
     }
 
     @Test
     public void testDecode() {
-        when(translationData.getText()).thenReturn(ApplicationTests.TEST_TEXT_MORSE_ENCODE);
-        Assert.assertEquals(ApplicationTests.TEST_TEXT, morseService.decode(translationData));
+        when(translationData.getText()).thenReturn(ApplicationTests.TEST_TEXT_CAESAR_ENCODE_1);
+        when(translationData.getShift()).thenReturn(1);
+        Assert.assertEquals(ApplicationTests.TEST_TEXT, caesarService.decode(translationData));
     }
 
 }

@@ -1,5 +1,7 @@
 package homework.service;
 
+import homework.model.TranslationData;
+
 /**
  * Translator Interface
  *
@@ -12,13 +14,14 @@ public interface Translator {
      * @param text translated text
      * @return
      */
-    String encode(String text);
+    String encode(TranslationData text);
 
     /**
      * Decoding from Selected translation methid to Text
      * @param text translated text
      * @return
      */
-    String decode(String text);
+    String decode(TranslationData text);
+
 
 }

@@ -26,12 +26,20 @@
     <form action="/">
         <div class="form-group">
         <div class="col-sm-6">
-            <fieldset>
-                <legend>Translator:</legend>
-                <select class="selectpicker" name="translator" id="translator">
+            <div class="col-md-6">
+                <fieldset>
+                    <legend>Translator:</legend>
+                    <select class="selectpicker" name="translator" id="translator">
 
-                </select>
-            </fieldset>
+                    </select>
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset class="caesarOption">
+                    <legend>Shift:</legend>
+                    <input type="text" id="shift" size="10" max="3" />
+                </fieldset>
+            </div>
         </div>
         <div class="col-sm-6">
             <fieldset>

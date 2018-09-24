@@ -2,12 +2,17 @@ package homework.config;
 
 import homework.factory.TranslatorFactory;
 import homework.service.MorseService;
-import homework.service.PlusService;
+import homework.service.CaesarService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.annotation.*;
+import org.springframework.http.MediaType;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
  *  Register of translation method
@@ -15,6 +20,15 @@ import org.springframework.context.annotation.*;
 @Configuration
 @ComponentScan(basePackages = {"homework.factory", "homework.service"})
 public class Config {
+
+    /**
+     * Model Mapper
+     * @return ModelMapper
+     */
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
     /**
      * Factory Bean Locator
@@ -42,16 +56,16 @@ public class Config {
 
 
     @Autowired
-    PlusService plusService;
+    CaesarService caesarService;
 
     /**
-     * Registration of Plus One Service
-     * @return PlusService
+     * Registration of Caesar Service
+     * @return CaesarService
      */
-    @Bean(name = "plus")
+    @Bean(name = "caesar")
     @Scope(scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public PlusService plusService() {
-        return plusService;
+    public CaesarService caesarService() {
+        return caesarService;
     }
 
 }

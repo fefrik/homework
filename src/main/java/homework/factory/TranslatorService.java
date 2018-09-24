@@ -1,5 +1,6 @@
 package homework.factory;
 
+import homework.model.TranslationData;
 import homework.service.Translator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,15 +14,21 @@ public class TranslatorService {
     @Autowired
     private TranslatorFactory translatorFactory;
 
-    public String encode(String str, TranslatorType type) {
+    public String encode(TranslationData data, TranslatorType type) {
+        if (data == null) {
+            return "";
+        }
         Translator translator = translatorFactory.getTranslator(type);
-        return translator.encode(str);
+        return translator.encode(data);
     }
 
 
-    public String decode(String str, TranslatorType type) {
+    public String decode(TranslationData data, TranslatorType type) {
+        if (data == null) {
+            return "";
+        }
         Translator translator = translatorFactory.getTranslator(type);
-        return translator.decode(str);
+        return translator.decode(data);
     }
 
 }

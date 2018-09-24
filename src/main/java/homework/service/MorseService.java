@@ -2,6 +2,7 @@ package homework.service;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import homework.model.TranslationData;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -25,10 +26,8 @@ public class MorseService implements Translator {
     private Resource res;
 
     @Override
-    public String encode(String text) {
-        if (text == null) {
-            return "";
-        }
+    public String encode(TranslationData data) {
+        String text = data.getText();
         try {
             Map<String, String> morseMap = loadMorseFile();
             String result = "";
@@ -49,10 +48,8 @@ public class MorseService implements Translator {
     }
 
     @Override
-    public String decode(String text) {
-        if (text == null) {
-            return "";
-        }
+    public String decode(TranslationData data) {
+        String text = data.getText();
         try {
             Map<String, String> morseMap = loadMorseFile();
             String result = "";
