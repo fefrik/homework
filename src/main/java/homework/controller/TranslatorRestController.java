@@ -5,10 +5,11 @@ import homework.dto.TranslationRequestDto;
 import homework.dto.TranslationResponseDto;
 import homework.exception.ServiceNotFoundException;
 
-import homework.factory.TranslatorService;
+import homework.factory.TranslatorFactory;
 import homework.factory.TranslatorType;
 
 import homework.model.TranslationData;
+import homework.service.Translator;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -38,7 +39,7 @@ public class TranslatorRestController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private TranslatorService translatorService;
+    private TranslatorFactory translatorFactory;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -66,18 +67,19 @@ public class TranslatorRestController {
 
         TranslatorType serviceType = TranslatorType.valueOf(serviceName.toUpperCase());
         TranslationData data = modelMapper.map(requestDto, TranslationData.class);
+        Translator translator = translatorFactory.getTranslator(serviceType);
 
         String text = data.getText();
 
         if (ENCODE.equals(action)) {
             logger.info("Encoding string {}", data.getText());
-            String result = translatorService.encode(data, serviceType);
+            String result = translator.encode(data);
             return new ResponseEntity<>(new TranslationResponseDto(text, result, serviceName, action), HttpStatus.OK);
         }
 
         if (DECODE.equals(action)) {
             logger.info("Decoding string {}", data.getText());
-            String result = translatorService.decode(data, serviceType);
+            String result = translator.decode(data);
             return new ResponseEntity<>(new TranslationResponseDto(text, result, serviceName, action), HttpStatus.OK);
         }
 
